@@ -1,3 +1,14 @@
 package: media_effect_manager
 version: '0.0.1a'
 author: 'Laurin Waller'
+page:
+  title: 'translate:media_effect_manager_title'
+  perm: media_effect_manager[]
+  pjax: false
+  icon: rex-icon fa-files-o
+  subpages:
+    effect_manager:
+      title: 'translate:media_effect_manager_effects'
+    help:
+      title: 'translate:media_effect_manager_help'
+
