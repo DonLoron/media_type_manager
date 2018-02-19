@@ -11,4 +11,9 @@ page:
       title: 'translate:media_effect_manager_effects'
     help:
       title: 'translate:media_effect_manager_help'
+    configuration:
+      title: 'translate:media_effect_manager_configuration'
+requires:
+  packages:
+    media_manager: '^2.0.1'
 

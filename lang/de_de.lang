@@ -1,5 +1,9 @@
 media_effect_manager_title = Media Effekt Manager
-media_effect_manager_effects = Media Effekte
+media_effect_manager_effects = Media Effekt Sets
+media_effect_manager_help = Hilfe
+media_effect_manager_configuration = Standard Konfiguration
 
 media_effect_manager_edit = bearbeiten
-media_effect_manager_help = hilfe
+media_effect_manager_name = Set Name
+media_effect_manager_description = Set Beschreibung
+media_effect_manager_norowsmessage = Keine Sets definiert

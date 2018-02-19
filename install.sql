@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%media_effect_set` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` TINYTEXT NOT NULL DEFAULT '',
+  `description` TINYTEXT NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%media_effect_subset` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` TINYTEXT NOT NULL DEFAULT '',
+  `description` TINYTEXT NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
