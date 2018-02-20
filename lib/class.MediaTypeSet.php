@@ -32,6 +32,21 @@ class MediaTypeSet
     //only try to safe data if translatedData is available
     if(isset($this->translatedData)) {
 
+      $jsonifiedEffects = [];
+
+      foreach($this->translatedData['defaultEffects'] as $effect) {
+        $options = [];
+        foreach($effect['options'] as $key => $optionValue) {
+          $options[$effect["effect"] . $key] = $optionValue;
+        }
+        $jsonifiedEffects[] = json_encode([
+          $effect["effect"] => $options
+        ]);
+      }
+
+      dump($jsonifiedEffects);
+
+
       if(!$update) {
 
         $types = [];
@@ -50,10 +65,17 @@ class MediaTypeSet
           if($this->translatedData['lazyloadActive'] == 1) $types[] = $typeBaseName . "lazy";
 
           //add these
+          foreach($types as $typeName) {
+            echo "INSERT INTO " . rex::getTablePrefix() . "media_manager_type (status, name, description) VALUES (1, '$typeName', '" . $this->translatedData['mediatypeSetDescription'] . "')<br>";
+
+            //now, add effect for each type
+            foreach($this->translatedData['defaultEffects'] as $effect) {
+              dump($effect);
+            }
+          }
         }
       }
     }
-
   }
 
   public static function getSetByName() {
