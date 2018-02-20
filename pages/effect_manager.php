@@ -7,7 +7,15 @@
 
 $func = rex_request('func', 'string');
 
+MediaTypeSet::getAllSets();
+
 if ($func == '') {
+
+  if(rex_request::post("sendit") == 1) {
+    $mediaSet = new MediaTypeSet(rex_request::post("mediatypeSet"));
+    $mediaSet->save();
+  }
+
   $list = rex_list::factory("SELECT * FROM `" . rex::getTablePrefix() . "media_effect_set` ORDER BY `name` ASC");
   $list->addTableAttribute('class', 'table-striped');
   $list->setNoRowsMessage($this->i18n('media_effect_manager_norowsmessage'));
@@ -30,7 +38,20 @@ if ($func == '') {
   echo $content;
 } else if($func == "add" || $func == "edit") {
 
+  $formData = $this->getConfig('defaultConfig');
 
+  $frag = new rex_fragment();
+  $frag->setVar("formData", $formData);
+  $body = $frag->parse("form.php");
+
+  $title = "Standardkonfiguration (Neue Sets werden immer mit diesen Werten angelegt)";
+
+  $fragment = new rex_fragment();
+  $fragment->setVar('body', $body, false);
+  $fragment->setVar('title', $title, false);
+  $content = $fragment->parse('core/page/section.php');
+
+  echo $content;
 
 }
 
