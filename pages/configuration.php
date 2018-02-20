@@ -7,53 +7,54 @@
  */
 
 /* @var rex_addon $this */
+if(!$this->hasConfig()) {
+  $this->setConfig('defaultConfig', [
+    'mediatypeSetName' => "fullscreen",
+    'breakpoints' => [
+      [
+        "breakpointName" => "L",
+        "values" => [
+          "width" => 1920,
+          "height" => 1080
+        ]
+      ],
+      [
+        "breakpointName" => "M",
+        "values" => [
+          "width" => 1024,
+          "height" => 768
+        ]
+      ],
+      [
+        "breakpointName" => "S",
+        "values" => [
+          "width" => 750,
+          "height" => 420
+        ]
+      ],
+      [
+        "breakpointName" => "XS",
+        "values" => [
+          "width" => 375,
+          "height" => 210
+        ]
+      ]
+    ],
+    "defaultEffects" => [
+      [
+        "effect" => "rex_effect_crop"
+      ],
+      [
+        "effect" => "rex_effect_resize"
+      ]
+    ],
+  ]);
+}
 
-$this->setConfig('defaultConfig', [
-  'mediatypeSetName' => "fullscreen",
-  'breakpoints' => [
-    [
-      "breakpointName" => "L",
-      "variables" => [
-        "width" => 1920,
-        "height" => 1080
-      ]
-    ],
-    [
-      "breakpointName" => "M",
-      "variables" => [
-        "width" => 1024,
-        "height" => 768
-      ]
-    ],
-    [
-      "breakpointName" => "S",
-      "variables" => [
-        "width" => 750,
-        "height" => 420
-      ]
-    ],
-    [
-      "breakpointName" => "XS",
-      "variables" => [
-        "width" => 375,
-        "height" => 210
-      ]
-    ]
-  ],
-  "defaultEffects" => [
-    "rex_effect_resize" => [
-      "width" => 1920,
-      "height" => 1080
-    ],
-    "rex_effect_crop" => [
-      "width" => 1920,
-      "height" => 1080
-    ]
-  ],
-  "retina" => true
-]);
-
-$title = "Standardkonfiguration (Neue Sets werden immer mit diesen Werten angelegt)";
+if(rex_request::post("sendit") == 1) {
+  $this->setConfig("defaultConfig", rex_request::post("mediatypeSet"));
+  echo rex_view::success("Konfiguration erfolgreich aktualisiert!");
+}
 
 $formData = $this->getConfig('defaultConfig');
 
@@ -61,24 +62,11 @@ $frag = new rex_fragment();
 $frag->setVar("formData", $formData);
 $body = $frag->parse("form.php");
 
-
-$formElements = [];
-$n = [];
-$n['field'] = '<a class="btn btn-abort" href="' . rex_url::currentBackendPage() . '">' . rex_i18n::msg('form_abort') . '</a>';
-$formElements[] = $n;
-
-$n = [];
-$n['field'] = '<button class="btn btn-apply" type="submit" name="sendit" value="1"' . rex::getAccesskey(rex_i18n::msg('update'), 'apply') . '>' . rex_i18n::msg('update') . '</button>';
-$formElements[] = $n;
-
-$fragment = new rex_fragment();
-$fragment->setVar('elements', $formElements, false);
-$buttons = $fragment->parse('core/form/submit.php');
+$title = "Standardkonfiguration (Neue Sets werden immer mit diesen Werten angelegt)";
 
 $fragment = new rex_fragment();
 $fragment->setVar('body', $body, false);
 $fragment->setVar('title', $title, false);
-$fragment->setVar('buttons', $buttons, false);
 $content = $fragment->parse('core/page/section.php');
 
 echo $content;

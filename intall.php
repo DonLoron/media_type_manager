@@ -2,43 +2,47 @@
 
 /* @var rex_addon $this */
 
-if (!$this->hasConfig()) {
+/* @var rex_addon $this */
+if(!$this->hasConfig()) {
   $this->setConfig('defaultConfig', [
-    'effectName' => "fullscreen",
+    'mediatypeSetName' => "fullscreen",
     'breakpoints' => [
       [
         "breakpointName" => "L",
-        "variables" => [
+        "values" => [
           "width" => 1920,
           "height" => 1080
         ]
       ],
       [
         "breakpointName" => "M",
-        "variables" => [
+        "values" => [
           "width" => 1024,
           "height" => 768
         ]
       ],
       [
         "breakpointName" => "S",
-        "variables" => [
+        "values" => [
           "width" => 750,
           "height" => 420
         ]
       ],
       [
         "breakpointName" => "XS",
-        "variables" => [
+        "values" => [
           "width" => 375,
           "height" => 210
         ]
       ]
     ],
-    "defaultActions" => [
-      "rex_effect_resize",
-      "rex_effect_crop"
+    "defaultEffects" => [
+      [
+        "effect" => "rex_effect_crop"
+      ],
+      [
+        "effect" => "rex_effect_resize"
+      ]
     ],
-    "retina" => true
   ]);
 }

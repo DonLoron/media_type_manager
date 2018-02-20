@@ -30,6 +30,8 @@ if ($func == '') {
   echo $content;
 } else if($func == "add" || $func == "edit") {
 
+
+
 }
 
 ?>
