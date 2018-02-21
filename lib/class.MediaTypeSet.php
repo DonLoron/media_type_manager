@@ -29,30 +29,20 @@ class MediaTypeSet
 
   public function save($update = false) {
 
+    $sqlFactory = rex_sql::factory();
+
     //only try to safe data if translatedData is available
     if(isset($this->translatedData)) {
 
-      $jsonifiedEffects = [];
-
-      foreach($this->translatedData['defaultEffects'] as $effect) {
-        $options = [];
-        foreach($effect['options'] as $key => $optionValue) {
-          $options[$effect["effect"] . $key] = $optionValue;
-        }
-        $jsonifiedEffects[] = json_encode([
-          $effect["effect"] => $options
-        ]);
-      }
-
-      dump($jsonifiedEffects);
-
-
       if(!$update) {
 
-        $types = [];
+        $newMediaTypeIds = [];
 
         //loop trough all breakpoints
         foreach($this->translatedData['breakpoints'] as $breakpoint) {
+
+          $types = [];
+
           //base name of type
           $typeBaseName = $this->translatedData["mediatypeSetName"] . $breakpoint['breakpointName'] . self::MEDIA_TYPE_IDENTIFIER;
 
@@ -66,14 +56,56 @@ class MediaTypeSet
 
           //add these
           foreach($types as $typeName) {
-            echo "INSERT INTO " . rex::getTablePrefix() . "media_manager_type (status, name, description) VALUES (1, '$typeName', '" . $this->translatedData['mediatypeSetDescription'] . "')<br>";
 
-            //now, add effect for each type
-            foreach($this->translatedData['defaultEffects'] as $effect) {
-              dump($effect);
+            try {
+              $sqlFactory->reset();
+              $result = $sqlFactory->setQuery("INSERT INTO " . rex::getTablePrefix() . "media_manager_type (status, name, description) VALUES (1, '$typeName', '" . $this->translatedData['mediatypeSetDescription'] . "')");
+              $newMediaTypeIds[] = $result->getLastId();
+
+            } catch (rex_sql_exception $e) {
+              echo "Konnte Eintrag $typeName nicht hinzufügen. Existiert bereits.<br>";
+              return false;
             }
           }
         }
+
+        //now add all effects
+        $effectInsert = "INSERT INTO " . rex::getTablePrefix() . "media_manager_type_effect (type_id, effect, parameters, priority) VALUES ";
+        $effectValueArray = [];
+
+        foreach($this->translatedData['defaultEffects'] as $i => $effect) {
+
+          //convert to right option array
+          $options = [];
+          foreach($effect['options'] as $key => $optionValue) {
+            $options[$effect["effect"] . $key] = $optionValue;
+          }
+
+          //and encode to json
+          $jsonifiedEffect = json_encode([
+            $effect["effect"] => $options
+          ]);
+
+          $shortName = str_replace("rex_effect_", "", $effect['effect']);
+
+          $prio = $i + 1;
+
+          foreach($newMediaTypeIds as $id) {
+            $effectValueArray[] = "($id, '$shortName', '$jsonifiedEffect', $prio)";
+          }
+        }
+
+        $effectInsert .= implode(',', $effectValueArray) . ";";
+        try {
+          $sqlFactory->reset();
+          $sqlFactory->setQuery($effectInsert);
+        } catch (rex_sql_exception $e) {
+          echo "Konnte Effekte nicht hinzufügen.<br>";
+          echo $e->getMessage();
+          return false;
+        }
+
+        return true;
       }
     }
   }
