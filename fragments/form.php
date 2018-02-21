@@ -30,15 +30,20 @@ $fragment = new rex_fragment();
     </fieldset>
     <fieldset>
       <legend>Breakpoints</legend>
-      <div id="accordion">
+      <div class="accordion" id="breakpoints">
       <? foreach($this->formData['breakpoints'] as $index => $breakpoint) { ?>
-        <div class="card panel panel-info" data-panelid="<?= $index ?>">
-          <div class="card-header panel-heading" id="hbreak<?= $index ?>" data-toggle="collapse" data-target="#break<?= $index ?>">
+        <div class="card panel panel-info">
+          <div class="card-header panel-heading" data-toggle="collapse" data-target="#breakpoints<?= $index ?>">
             <h5 class="mb-break<?= $index ?> panel-title">
-                Breakpoint "<?= $this->formData['mediatypeSetName'] . $breakpoint['breakpointName'] ?>" <button type="button" class="removePanel btn btn-xs btn-danger pull-right"><span class="glyphicon glyphicon-trash"></span></button>
+                Breakpoint "<?= $this->formData['mediatypeSetName'] . $breakpoint['breakpointName'] ?>"
+              <div class="btn-group pull-right">
+                <button type="button" class="movePanel moveUp btn btn-xs btn-default"><span class="glyphicon glyphicon glyphicon-chevron-up"></span></button>
+                <button type="button" class="movePanel moveDown btn btn-xs btn-default"><span class="glyphicon glyphicon glyphicon-chevron-down"></span></button>
+                <button type="button" class="removePanel btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
+              </div>
             </h5>
           </div>
-          <div id="break<?= $index ?>" class="collapse panel-body" data-parent="#accordion">
+          <div id="breakpoints<?= $index ?>" class="collapse panel-body" data-parent="#accordion">
             <div class="card-body">
               <?
               $n = [];
@@ -79,7 +84,7 @@ $fragment = new rex_fragment();
     </fieldset>
     <fieldset>
       <legend>Effekte</legend>
-      <div id="accordionEffect">
+      <div class="accordion" id="defaultEffects">
         <?
 
         $effects = MediaEffectManagerHelper::getMediaManagerEffectArray();
@@ -87,12 +92,17 @@ $fragment = new rex_fragment();
         foreach($this->formData['defaultEffects'] as $index => $savedEffectValues) { ?>
           <? $effectShortName = str_replace("rex_effect_", "", $savedEffectValues["effect"])?>
           <div class="card panel panel-info">
-            <div class="card-header panel-heading" id="heffect<?= $index ?>" data-toggle="collapse" data-target="#effect<?= $index ?>">
-              <h5 class="mb-effect<?= $index ?> panel-title">
-                Effekt "<?= $effectShortName ?>" <button type="button" class="removePanel btn btn-xs btn-danger pull-right"><span class="glyphicon glyphicon-trash"></span></button>
+            <div class="card-header panel-heading" data-toggle="collapse" data-target="#defaultEffects<?= $index ?>">
+              <h5 class="panel-title">
+                Effekt "<?= $effectShortName ?>"
+                <div class="btn-group pull-right">
+                  <button type="button" class="movePanel moveUp btn btn-xs btn-default"><span class="glyphicon glyphicon glyphicon-chevron-up"></span></button>
+                  <button type="button" class="movePanel moveDown btn btn-xs btn-default"><span class="glyphicon glyphicon glyphicon-chevron-down"></span></button>
+                  <button type="button" class="removePanel btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
+                </div>
               </h5>
             </div>
-            <div id="effect<?= $index ?>" class="collapse panel-body" data-parent="#accordionEffect">
+            <div id="defaultEffects<?= $index ?>" class="collapse panel-body">
               <div class="card-body">
                 <?
 
@@ -162,36 +172,42 @@ $fragment = new rex_fragment();
       var $panelTitle = $(this).closest('.panel').find('h5');
 
       $panelTitle.html($panelTitle.html().replace(/"(.*?)"/, '"' + oldTitle + newBrk + '"'));
-      $panelVariables.each(function(){
-        var attrName = $(this).attr('name');
-
-        $(this).attr('name', attrName.toString().replace(/\[breakpoints]\[.*?]/, "[breakpoints][" + newBrk + "]"));
-      });
-
     });
 
     //adds a panel
     $(document).on('click', '.addPanel', function(e){
       e.stopPropagation();
-
-      var $newPanel = $(this).prev().find('.panel:last-child').clone();
-      var oldId = $newPanel.data('panelid');
-
-      var search = new RegExp("break" + oldId, 'g');
-      var replace = "break" + (oldId + 1);
-
-      $newPanel = $($newPanel[0].outerHTML.replace(search, replace));
-      $newPanel.attr('panelid', oldId + 1);
-
-      $(this).prev().append($newPanel);
+      $(this).prev().append($(this).prev().find('.panel:last-child').clone());
+      calculateNewPanelIndexes();
     });
 
     //removes a panel
     $(document).on('click', '.removePanel', function(e){
       e.stopPropagation();
       $(this).closest('.panel').remove();
+      calculateNewPanelIndexes();
     });
 
+    //moves a panel
+    $(document).on('click', '.movePanel', function(e){
+
+      e.stopPropagation();
+      var $currentPanel = $(this).closest('.panel');
+
+      if($(this).hasClass('moveUp') && $currentPanel.prev().length > 0) {
+        var $previousPanel = $currentPanel.prev();
+        $currentPanel = $currentPanel.detach();
+        $currentPanel.insertBefore($previousPanel);
+        calculateNewPanelIndexes();
+      } else if($(this).hasClass('moveDown') && $currentPanel.next().length > 0) {
+        var $previousPanel = $currentPanel.next();
+        $currentPanel = $currentPanel.detach();
+        $currentPanel.insertAfter($previousPanel);
+        calculateNewPanelIndexes();
+      }
+    });
+
+    //changes effect vars
     $(document).on('change', '.effectSelect', function(){
       var $panel = $(this).closest('.panel');
       var $panelTitle = $panel.find('h5');
@@ -214,4 +230,26 @@ $fragment = new rex_fragment();
 
     });
   });
+
+  //calculates new accordeon panel indexes and ids
+  function calculateNewPanelIndexes() {
+    $('.accordion').each(function(){
+
+      var idPrefix = $(this).attr('id');
+
+      $(this).find('.panel').each(function(index) {
+
+        //fix accordion ids
+        var newId = idPrefix + index;
+        $(this).find('.panel-heading').attr('data-target', "#" + newId);
+        $(this).find('.panel-body').attr('id', newId);
+
+        //fix form ids
+        var thisHTML = this.outerHTML;
+        thisHTML = thisHTML.replace(/\[(\d*?)]/g, "[" + index + "]");
+        $(this).replaceWith($(thisHTML));
+      });
+
+    });
+  }
 </script>
