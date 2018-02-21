@@ -6,6 +6,7 @@
 if(!$this->hasConfig()) {
   $this->setConfig('defaultConfig', [
     'mediatypeSetName' => "fullscreen",
+    'lazyloadActive' => 1,
     'breakpoints' => [
       [
         "breakpointName" => "L",
@@ -25,23 +26,23 @@ if(!$this->hasConfig()) {
         "breakpointName" => "S",
         "values" => [
           "width" => 750,
-          "height" => 420
+          "height" => 1170
         ]
       ],
       [
         "breakpointName" => "XS",
         "values" => [
           "width" => 375,
-          "height" => 210
+          "height" => 585
         ]
       ]
     ],
     "defaultEffects" => [
       [
-        "effect" => "rex_effect_crop"
+        "effect" => "rex_effect_resize"
       ],
       [
-        "effect" => "rex_effect_resize"
+        "effect" => "rex_effect_crop"
       ]
     ],
   ]);

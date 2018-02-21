@@ -9,7 +9,7 @@ $fragment = new rex_fragment();
 
       $n = [];
       $n['label'] = "<label for=\"media_set_title\">Mediatype-Set Name</label>";
-      $n['field'] = "<input class='form-control' type=\"text\" id=\"media_set_title\" name=\"mediatypeSet[mediatypeSetName]\" value=\"{$this->formData['mediatypeSetName']}\">";
+      $n['field'] = "<input class='form-control mediatypeSetName' type=\"text\" id=\"media_set_title\" name=\"mediatypeSet[mediatypeSetName]\" value=\"{$this->formData['mediatypeSetName']}\">";
       $formElements[] = $n;
 
       $n = [];
@@ -141,9 +141,17 @@ $fragment = new rex_fragment();
     $n['field'] = '<a class="btn btn-abort" href="' . rex_url::currentBackendPage() . '">' . rex_i18n::msg('form_abort') . '</a>';
     $formElements[] = $n;
 
-    $n = [];
-    $n['field'] = '<button class="btn btn-apply" type="submit" name="sendit" value="1"' . rex::getAccesskey(rex_i18n::msg('update'), 'apply') . '>' . rex_i18n::msg('update') . '</button>';
-    $formElements[] = $n;
+    $func = rex_request('func', 'string');
+
+    if($func == "add") {
+      $n = [];
+      $n['field'] = '<button class="btn btn-apply" type="submit" name="sendit" value="1"' . rex::getAccesskey(rex_i18n::msg('update'), 'apply') . '>' . rex_i18n::msg('add') . '</button>';
+      $formElements[] = $n;
+    } else {
+      $n = [];
+      $n['field'] = '<button class="btn btn-apply" type="submit" name="sendit" value="1"' . rex::getAccesskey(rex_i18n::msg('update'), 'apply') . '>' . rex_i18n::msg('update') . '</button>';
+      $formElements[] = $n;
+    }
 
     $fragment = new rex_fragment();
     $fragment->setVar('elements', $formElements, false);
@@ -155,10 +163,10 @@ $fragment = new rex_fragment();
   $(document).ready(function(){
 
     //changes breakpoint name
-    var oldTitle = $('#media_set_title').val();
-    $('#media_set_title').on('keyup', function(){
+    var oldTitle = $('.mediatypeSetName').val();
+    $('.mediatypeSetName').on('keyup', function(){
       var newTitle = $(this).val();
-      $('#accordion h5').each(function() {
+      $('#breakpoints h5').each(function() {
         $(this).html($(this).html().replace(" \"" + oldTitle, " \"" + newTitle));
       });
       oldTitle = newTitle;

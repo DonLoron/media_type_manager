@@ -63,8 +63,6 @@ class MediaTypeSet
             ];
           }
 
-          dump($breakpoint);
-
           //add these media types
           foreach($breakpoint['types'] as $newType) {
 
@@ -103,8 +101,6 @@ class MediaTypeSet
 
                 $effectValueArray[] = "($newType[id], '$shortName', '$jsonifiedEffect', $prio)";
               }
-
-              dump($effectValueArray);
 
               $effectInsert .= implode(',', $effectValueArray) . ";";
 
