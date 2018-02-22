@@ -35,7 +35,7 @@ $fragment = new rex_fragment();
         <div class="card panel panel-info">
           <div class="card-header panel-heading" data-toggle="collapse" data-target="#breakpoints<?= $index ?>">
             <h5 class="mb-break<?= $index ?> panel-title">
-                Breakpoint "<?= $this->formData['mediatypeSetName'] . $breakpoint['breakpointName'] ?>"
+                Breakpoint "<?= $this->formData['mediatypeSetName'] . MediaTypeSet::MEDIA_SET_BREAKPOINT_DELIMETER . $breakpoint['breakpointName'] ?>"
               <div class="btn-group pull-right">
                 <button type="button" class="movePanel moveUp btn btn-xs btn-default"><span class="glyphicon glyphicon glyphicon-chevron-up"></span></button>
                 <button type="button" class="movePanel moveDown btn btn-xs btn-default"><span class="glyphicon glyphicon glyphicon-chevron-down"></span></button>
@@ -145,7 +145,19 @@ $fragment = new rex_fragment();
 
     if($func == "add") {
       $n = [];
-      $n['field'] = '<button class="btn btn-apply" type="submit" name="sendit" value="1"' . rex::getAccesskey(rex_i18n::msg('update'), 'apply') . '>' . rex_i18n::msg('add') . '</button>';
+      $n['field'] = '<button class="btn btn-apply" type="submit" name="sendit" value="1"' . rex::getAccesskey(rex_i18n::msg('add'), 'apply') . '>' . rex_i18n::msg('add') . '</button>';
+      $formElements[] = $n;
+    } else if ($func == "edit"){
+      $n = [];
+      $n['field'] = "<input type='hidden' name=\"mediatypeSet[mediatypeSetOldName]\" value=\"{$this->formData['mediatypeSetName']}\">";
+      $formElements[] = $n;
+
+      $n = [];
+      $n['field'] = '<input type="hidden" name="update" value="true">';
+      $formElements[] = $n;
+
+      $n = [];
+      $n['field'] = '<button class="btn btn-apply" type="submit" name="sendit" value="1"' . rex::getAccesskey(rex_i18n::msg('update'), 'apply') . '>' . rex_i18n::msg('update') . '</button>';
       $formElements[] = $n;
     } else {
       $n = [];
@@ -179,7 +191,7 @@ $fragment = new rex_fragment();
       var $panelVariables = $(this).closest('.panel').find('.defaultVars');
       var $panelTitle = $(this).closest('.panel').find('h5');
 
-      $panelTitle.html($panelTitle.html().replace(/"(.*?)"/, '"' + oldTitle + newBrk + '"'));
+      $panelTitle.html($panelTitle.html().replace(/"(.*?)"/, '"' + oldTitle + "<?= MediaTypeSet::MEDIA_SET_BREAKPOINT_DELIMETER ?>" + newBrk + '"'));
     });
 
     //adds a panel
@@ -252,8 +264,14 @@ $fragment = new rex_fragment();
         $(this).find('.panel-heading').attr('data-target', "#" + newId);
         $(this).find('.panel-body').attr('id', newId);
 
+        //first set value of found inputs because they do not get copied with html code
+        //TODO: is there a better solution?
+        $(this).find('input').each(function(){
+          $(this).attr('value', $(this).val());
+        });
+
         //fix form ids
-        var thisHTML = this.outerHTML;
+        var thisHTML = $(this).clone().get(0).outerHTML;
         thisHTML = thisHTML.replace(/\[(\d*?)]/g, "[" + index + "]");
         $(this).replaceWith($(thisHTML));
       });

@@ -1,5 +1,5 @@
 package: media_effect_manager
-version: '0.1a'
+version: '0.2a'
 author: 'Laurin Waller'
 page:
   title: 'translate:media_effect_manager_title'
