@@ -32,7 +32,7 @@ class MediaTypeSet
       //when updating, delete old entries ):
       if($update) {
         try {
-          $sqlFactory->setQuery("DELETE e,t FROM rex_media_manager_type_effect e JOIN rex_media_manager_type t ON e.type_id = t.id WHERE t.name LIKE '%{$this->translatedData['mediatypeSetOldName']}%'");
+          $sqlFactory->setQuery("DELETE e,t FROM rex_media_manager_type_effect e JOIN rex_media_manager_type t ON e.type_id = t.id WHERE t.name LIKE '{$this->translatedData['mediatypeSetOldName']}%'");
         } catch (rex_sql_exception $e) {
           echo "Konnte set nicht aktualisieren: " . $e->getMessage();
           return false;
@@ -239,7 +239,7 @@ class MediaTypeSet
   public static function getSetByName($setName) {
     $sql = rex_sql::factory();
 
-    $allMediaManagerTypes = $sql->getArray("SELECT * FROM " . rex::getTablePrefix() . "media_manager_type WHERE name LIKE '%$setName%'");
+    $allMediaManagerTypes = $sql->getArray("SELECT * FROM " . rex::getTablePrefix() . "media_manager_type WHERE name LIKE '$setName%'");
 
     $translatedData = self::translateSql($allMediaManagerTypes, false);
 
