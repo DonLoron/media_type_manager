@@ -12,12 +12,14 @@
 
       $n = [];
 
+      $value = isset($this->savedEffectValues['options'][$param['name']]) ? $this->savedEffectValues['options'][$param['name']] : '';
+
       switch($param["type"]) {
         case 'select':
 
           $options = "";
           foreach($param['options'] as $optionsValue => $optionsText) {
-            $options .= "<option value=\"$optionsValue\"" . ($this->savedEffectValues['options'][$param['name']] == $optionsValue || $param['default'] == $optionsText ? 'selected' : '') . ">" . $optionsText . "</option>";
+            $options .= "<option value=\"$optionsValue\"" . ($value == $optionsValue || $param['default'] == $optionsText ? 'selected' : '') . ">" . $optionsText . "</option>";
           }
 
           $n['label'] = "<label for=\"media_set_title\">$param[label]</label>";
@@ -27,7 +29,7 @@
         default:
 
           $n['label'] = "<label for=\"media_set_title\">$param[label]</label>";
-          $n['field'] = "<input class='form-control' type=\"text\" id=\"media_set_title\" name=\"mediatypeSet[defaultEffects][{$this->formIndex}][options][$param[name]]\" value=\"{$this->savedEffectValues['options'][$param['name']]}\">";
+          $n['field'] = "<input class='form-control' type=\"text\" id=\"media_set_title\" name=\"mediatypeSet[defaultEffects][{$this->formIndex}][options][$param[name]]\" value=\"$value\">";
 
           break;
       }
