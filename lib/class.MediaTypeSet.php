@@ -196,7 +196,7 @@ class MediaTypeSet
    * @param $mediaManagerTypeName
    * @return string
    */
-  public function getMediaTypeSetName($mediaManagerTypeName) {
+  public static function getMediaTypeSetName($mediaManagerTypeName) {
 
     $matched = preg_match("/(.*)-/Ui", $mediaManagerTypeName, $matches);
 
@@ -213,7 +213,7 @@ class MediaTypeSet
    * @param $mediaManagerTypeName
    * @return string
    */
-  public function getMediaTypeBreakpointName($mediaManagerTypeName) {
+  public static function getMediaTypeBreakpointName($mediaManagerTypeName) {
 
     //first split by MEDIA_TYPE_IDENTIFIER
     $matched = preg_match("/-(.*)@/Ui", $mediaManagerTypeName, $matches);
