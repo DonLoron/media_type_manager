@@ -1,7 +1,7 @@
 <?php
 /* @var $this rex_fragment */
 ?>
-Das isch eh liste!<br>
+Media Set Typen<br>
 <?
 foreach($this->listElements as $element) {
   ?>
@@ -11,5 +11,5 @@ foreach($this->listElements as $element) {
 }
 ?>
 <br>
-<a class="btn btn-edit" href="<?= rex_url::currentBackendPage(["func" => "add"]) ?>">¡Neu!</a>
+<a class="btn btn-edit" href="<?= rex_url::currentBackendPage(["func" => "add"]) ?>">Neues Set hinzufügen</a>
 
