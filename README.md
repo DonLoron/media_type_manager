@@ -1,4 +1,4 @@
-#Media Type Manager Addon
+# Media Type Manager Addon
 
 Das Media Type Manager Addon soll helfen, einfach schnell und unkompliziert neue Mediamanager Typen für den REDAXO 5 Mediamanager anzulegen. 
 
