@@ -3,7 +3,7 @@
 <? $effects = MediaTypeSetHelper::getMediaManagerEffectArray(); ?>
 
 <fieldset class="effectVariables">
-  <legend>Standard Vars</legend>
+  <legend>Effekt Optionen <span data-toggle='tooltip' data-placement='top' data-title='Standard Optionen die pro Breakpoint überschrieben werden könnten.' class='glyphicon glyphicon-info-sign'></span></legend>
   <?
   $innerFormElements = [];
 

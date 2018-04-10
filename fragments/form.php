@@ -8,17 +8,17 @@ $fragment = new rex_fragment();
       <?
 
       $n = [];
-      $n['label'] = "<label for=\"media_set_title\">Mediatype-Set Name</label>";
+      $n['label'] = "<label for=\"media_set_title\">Mediatype-Set Name <span data-toggle='tooltip' data-placement='top' data-title='MM-Typ Beschreibung' class='glyphicon glyphicon-info-sign'></span></label>";
       $n['field'] = "<input class='form-control mediatypeSetName' type=\"text\" id=\"media_set_title\" name=\"mediatypeSet[mediatypeSetName]\" value=\"{$this->formData['mediatypeSetName']}\">";
       $formElements[] = $n;
 
       $n = [];
-      $n['label'] = "<label for=\"media_set_title\">Mediatype-Set Beschreibung</label>";
+      $n['label'] = "<label for=\"media_set_title\">Mediatype-Set Beschreibung <span data-toggle='tooltip' data-placement='top' data-title='MM-Typ Beschreibung' class='glyphicon glyphicon-info-sign'></span></label>";
       $n['field'] = "<textarea class='form-control' type=\"text\" id=\"media_set_description\" name=\"mediatypeSet[mediatypeSetDescription]\" rows=\"4\">{$this->formData['mediatypeSetDescription']}</textarea>";
       $formElements[] = $n;
 
       $n = [];
-      $n['label'] = "<label for=\"media_set_title\">Lazyload Aktiv?</label>";
+      $n['label'] = "<label for=\"media_set_title\">Lazyload Aktiv? <span data-toggle='tooltip' data-placement='top' data-title='Wenn aktiv werden MM-Typen für lazy (x.5 resolution) generiert' class='glyphicon glyphicon-info-sign'></span></label>";
       $n['field'] = "<select class='form-control' type=\"text\" id=\"media_set_title\" name=\"mediatypeSet[lazyloadActive]\"><option value=\"0\" " . ($this->formData['lazyloadActive'] == 0 ? 'selected' : '') . ">Nein</option><option value=\"1\" " . ($this->formData['lazyloadActive'] == 1 ? 'selected' : '') . ">Ja</option></select>";
       $formElements[] = $n;
 
@@ -29,7 +29,7 @@ $fragment = new rex_fragment();
       ?>
     </fieldset>
     <fieldset>
-      <legend>Breakpoints</legend>
+      <legend>Breakpoints <span data-toggle='tooltip' data-placement='top' data-title='Generiert sourcen für angegebene Breakpoints im <picture> tag.' class='glyphicon glyphicon-info-sign'></span></legend>
       <div class="accordion" id="breakpoints">
       <? foreach($this->formData['breakpoints'] as $index => $breakpoint) { ?>
         <div class="card panel panel-info">
@@ -37,8 +37,8 @@ $fragment = new rex_fragment();
             <h5 class="mb-break<?= $index ?> panel-title">
                 Breakpoint "<?= $this->formData['mediatypeSetName'] . MediaTypeSet::MEDIA_SET_BREAKPOINT_DELIMETER . $breakpoint['breakpointName'] ?>"
               <div class="btn-group pull-right">
-                <button type="button" class="movePanel moveUp btn btn-xs btn-default"><span class="glyphicon glyphicon glyphicon-chevron-up"></span></button>
-                <button type="button" class="movePanel moveDown btn btn-xs btn-default"><span class="glyphicon glyphicon glyphicon-chevron-down"></span></button>
+                <button type="button" class="movePanel moveUp btn btn-xs btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
+                <button type="button" class="movePanel moveDown btn btn-xs btn-default"><span class="glyphicon glyphicon-chevron-down"></span></button>
                 <button type="button" class="removePanel btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
               </div>
             </h5>
@@ -56,7 +56,7 @@ $fragment = new rex_fragment();
               unset($formElements);
               ?>
               <fieldset>
-                <legend>Breakpoint spezifische Variablen</legend>
+                <legend>Breakpoint spezifische Optionen <span data-toggle='tooltip' data-placement='top' data-title='Diese Optionen überschreiben gleichnamige Optionen in den Effekten. Sommit kann pro Breakpoint die Grösse gesetzt werden, während z.B. horz. und vert. offset gleichbleibt.' class='glyphicon glyphicon-info-sign'></span></legend>
                 <?
                 $innerFormElements = [];
 
@@ -83,7 +83,7 @@ $fragment = new rex_fragment();
       <br>
     </fieldset>
     <fieldset>
-      <legend>Effekte</legend>
+      <legend>Effekte <span data-toggle='tooltip' data-placement='top' data-title='Fügt jedem Breakpoint diese Effekte mit ihren jeweiligen default Optionen hinzu.' class='glyphicon glyphicon-info-sign'></span></legend>
       <div class="accordion" id="defaultEffects">
         <?
 
@@ -173,6 +173,8 @@ $fragment = new rex_fragment();
 </div>
 <script>
   $(document).ready(function(){
+
+    $('[data-toggle="tooltip"]').tooltip();
 
     //changes breakpoint name
     var oldTitle = $('.mediatypeSetName').val();
