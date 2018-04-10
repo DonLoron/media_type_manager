@@ -23,6 +23,18 @@ class MediaTypeSet
     $this->translatedData = $data;
   }
 
+  public static function delete($mediaSetName) {
+    $sqlFactory = rex_sql::factory();
+    try {
+      $name = $mediaSetName . self::MEDIA_SET_BREAKPOINT_DELIMETER;
+      $sqlFactory->setQuery("DELETE t,e FROM rex_media_manager_type t LEFT JOIN rex_media_manager_type_effect e  ON t.id = e.type_id WHERE t.name LIKE '{$name}%'");
+    } catch (rex_sql_exception $e) {
+      echo "Konnte set nicht aktualisieren: " . $e->getMessage();
+      return false;
+    }
+    return true;
+  }
+
   public function save($update = false) {
 
     $sqlFactory = rex_sql::factory();
@@ -32,7 +44,7 @@ class MediaTypeSet
       //when updating, delete old entries ):
       if($update) {
         try {
-          $sqlFactory->setQuery("DELETE e,t FROM rex_media_manager_type_effect e JOIN rex_media_manager_type t ON e.type_id = t.id WHERE t.name LIKE '{$this->translatedData['mediatypeSetOldName']}%'");
+          $sqlFactory->setQuery("DELETE e,t FROM rex_media_manager_type_effect e LEFT JOIN rex_media_manager_type t ON e.type_id = t.id WHERE t.name LIKE '{$this->translatedData['mediatypeSetOldName']}%'");
         } catch (rex_sql_exception $e) {
           echo "Konnte set nicht aktualisieren: " . $e->getMessage();
           return false;
@@ -109,6 +121,9 @@ class MediaTypeSet
               $sqlFactory->setQuery($effectInsert);
             } catch (rex_sql_exception $e) {
               echo "Konnte Effekte nicht hinzufügen.<br>";
+              echo "<br>";
+              echo $effectInsert."<br>";
+              echo "<br>";
               echo $e->getMessage();
             }
 

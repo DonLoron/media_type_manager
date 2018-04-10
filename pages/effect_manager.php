@@ -9,13 +9,15 @@ $func = rex_request('func', 'string');
 
 $fragment = new rex_fragment();
 
-if ($func == '') {
+if ($func == '' || $func == "delete") {
+
+  if($func == "delete") {
+    MediaTypeSet::delete(rex_request("mediatypeSetName"));
+  }
 
   //save media type set
   if(rex_request::post("sendit") == 1) {
-
     $mediaSet = new MediaTypeSet(rex_request::post("mediatypeSet"));
-
     $mediaSet->save((rex_request("update") != ""));
   }
 
