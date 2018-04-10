@@ -241,7 +241,15 @@ $fragment = new rex_fragment();
         if(data !== "") {
           data = JSON.parse(data);
           if(data.status === "success") {
-            $panel.find('.effectVariables').replaceWith($(data.content));
+
+            var $content = $(data.content);
+
+            //deselect all options
+            $panel.find('.effectSelect option').removeAttr('selected').filter('[value=rex_effect_' + effectShortName + ']').attr('selected', true);
+            //select correct value
+
+            $panel.find('.effectVariables').replaceWith($content);
+            calculateNewPanelIndexes();
           } else {
             alert('there was an error with this request');
           }
