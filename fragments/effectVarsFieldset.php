@@ -19,7 +19,7 @@
 
           $options = "";
           foreach($param['options'] as $optionsValue => $optionsText) {
-            $options .= "<option value=\"$optionsValue\"" . ($value == $optionsValue || $param['default'] == $optionsText ? 'selected' : '') . ">" . $optionsText . "</option>";
+            $options .= "<option value=\"$optionsText\"" . ($value == $optionsText || $param['default'] == $optionsText ? 'selected' : '') . ">" . $optionsText . "</option>";
           }
 
           $n['label'] = "<label for=\"media_set_title\">$param[label]</label>";
