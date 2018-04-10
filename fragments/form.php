@@ -87,7 +87,7 @@ $fragment = new rex_fragment();
       <div class="accordion" id="defaultEffects">
         <?
 
-        $effects = MediaEffectManagerHelper::getMediaManagerEffectArray();
+        $effects = MediaTypeSetHelper::getMediaManagerEffectArray();
 
         foreach($this->formData['defaultEffects'] as $index => $savedEffectValues) { ?>
           <? $effectShortName = str_replace("rex_effect_", "", $savedEffectValues["effect"])?>

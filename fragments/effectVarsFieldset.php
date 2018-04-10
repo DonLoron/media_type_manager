@@ -1,6 +1,6 @@
 <? /* @var $this rex_fragment */ ?>
 
-<? $effects = MediaEffectManagerHelper::getMediaManagerEffectArray(); ?>
+<? $effects = MediaTypeSetHelper::getMediaManagerEffectArray(); ?>
 
 <fieldset class="effectVariables">
   <legend>Standard Vars</legend>

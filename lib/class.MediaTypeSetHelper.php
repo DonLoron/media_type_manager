@@ -1,7 +1,7 @@
 <?php
 
 
-class MediaEffectManagerHelper
+class MediaTypeSetHelper
 {
 
   /**
