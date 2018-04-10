@@ -1,18 +1,18 @@
-package: media_effect_manager
+package: media_type_manager
 version: '0.3a'
 author: 'Laurin Waller'
 page:
-  title: 'translate:media_effect_manager_title'
-  perm: media_effect_manager[]
+  title: 'translate:media_type_manager_title'
+  perm: media_type_manager[]
   pjax: false
   icon: rex-icon fa-files-o
   subpages:
     effect_manager:
-      title: 'translate:media_effect_manager_effects'
+      title: 'translate:media_type_manager_effects'
     help:
-      title: 'translate:media_effect_manager_help'
+      title: 'translate:media_type_manager_help'
     configuration:
-      title: 'translate:media_effect_manager_configuration'
+      title: 'translate:media_type_manager_configuration'
 requires:
   packages:
     media_manager: '^2.0.1'
