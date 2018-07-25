@@ -20,14 +20,15 @@ if(!rex::isBackend()) {
     }
 
     if($addonConfig['autoloadPicturefill'] == 1) {
-      if(rex_addon::exists('useragent')) {
+      $js = '';
+      if(class_exists(useragent)) {
         if (useragent::isBrowserInternetExplorer()) {
            $js = '<script src="' . rex_url::assets('addons/media_type_manager/vendor/js/picturefill.min.js') . '"></script>';
         }
       } else {
         $js = '<script src="' . rex_url::assets('addons/media_type_manager/vendor/js/picturefill.min.js') . '"></script>';
       }
-      $page = str_replace('</body>', $js . '</body>', $page);
+      if($js != '') $page = str_replace('</body>', $js . '</body>', $page);
     }
 
     return $page;
