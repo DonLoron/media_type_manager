@@ -19,7 +19,7 @@ if(!rex::isBackend()) {
       $page = str_replace('</body>', $js . '</body>', $page);
     }
 
-    if($addonConfig['autloadPicturefill'] == 1) {
+    if($addonConfig['autoloadPicturefill'] == 1) {
       if(rex_addon::exists('useragent')) {
         if (useragent::isBrowserInternetExplorer()) {
            $js = '<script src="' . rex_url::assets('addons/media_type_manager/vendor/js/picturefill.min.js') . '"></script>';
