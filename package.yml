@@ -13,6 +13,8 @@ page:
       title: 'translate:media_type_manager_help'
     configuration:
       title: 'translate:media_type_manager_configuration'
+    addon_configuration:
+      title: 'translate:media_type_manager_addon_configuration'
 requires:
   packages:
     media_manager: '^2.0.1'

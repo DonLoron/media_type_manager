@@ -1,6 +1,6 @@
 <? /* @var $this rex_fragment */ ?>
 
-<? $effects = MediaTypeSetHelper::getMediaManagerEffectArray(); ?>
+<? $effects = rex_media_type_set_helper::getMediaManagerEffectArray(); ?>
 
 <fieldset class="effectVariables">
   <legend>Effekt Optionen <span data-toggle='tooltip' data-placement='top' data-title='Standard Optionen die pro Breakpoint überschrieben werden könnten.' class='glyphicon glyphicon-info-sign'></span></legend>

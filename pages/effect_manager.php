@@ -12,16 +12,16 @@ $fragment = new rex_fragment();
 if ($func == '' || $func == "delete") {
 
   if($func == "delete") {
-    MediaTypeSet::delete(rex_request("mediatypeSetName"));
+    rex_media_type_set::delete(rex_request("mediatypeSetName"));
   }
 
   //save media type set
   if(rex_request::post("sendit") == 1) {
-    $mediaSet = new MediaTypeSet(rex_request::post("mediatypeSet"));
+    $mediaSet = new rex_media_type_set(rex_request::post("mediatypeSet"));
     $mediaSet->save((rex_request("update") != ""));
   }
 
-  $sets = MediaTypeSet::getAllSets();
+  $sets = rex_media_type_set::getAllSets();
 
   //make the list!
   $fragment->setVar("listElements", $sets);
@@ -30,7 +30,7 @@ if ($func == '' || $func == "delete") {
 } else if($func == "add" || $func == "edit") {
 
   if($func == "edit") {
-    $formData = MediaTypeSet::getSetByName(rex_request("mediatypeSetName"));
+    $formData = rex_media_type_set::getSetByName(rex_request("mediatypeSetName"));
   } else {
     $formData = $this->getConfig('defaultConfig');
   }

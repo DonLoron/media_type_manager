@@ -35,7 +35,7 @@ $fragment = new rex_fragment();
         <div class="card panel panel-info">
           <div class="card-header panel-heading" data-toggle="collapse" data-target="#breakpoints<?= $index ?>">
             <h5 class="mb-break<?= $index ?> panel-title">
-                Breakpoint "<?= $this->formData['mediatypeSetName'] . MediaTypeSet::MEDIA_SET_BREAKPOINT_DELIMETER . $breakpoint['breakpointName'] ?>"
+                Breakpoint "<?= $this->formData['mediatypeSetName'] . rex_media_type_set::MEDIA_SET_BREAKPOINT_DELIMETER . $breakpoint['breakpointName'] ?>"
               <div class="btn-group pull-right">
                 <button type="button" class="movePanel moveUp btn btn-xs btn-default"><span class="glyphicon glyphicon-chevron-up"></span></button>
                 <button type="button" class="movePanel moveDown btn btn-xs btn-default"><span class="glyphicon glyphicon-chevron-down"></span></button>
@@ -60,11 +60,16 @@ $fragment = new rex_fragment();
                 <?
                 $innerFormElements = [];
 
+                $n = [];
+                $n['label'] = "<label for=\"breakpoint_query_$index\">Media Query</label>";
+                $n['field'] = "<input class=\"form-control\" type=\"text\" id=\"breakpoint_query_$index\" name=\"mediatypeSet[breakpoints][$index][mediaQuery]\" value=\"{$breakpoint['mediaQuery']}\">";
+                $innerFormElements[] = $n;
+
                 foreach($breakpoint['values'] as $k => $var) {
 
                   $n = [];
-                  $n['label'] = "<label for=\"media_set_title\">Variable \"$k\"</label>";
-                  $n['field'] = "<input class=\"form-control defaultVars\" type=\"text\" id=\"media_set_title\" name=\"mediatypeSet[breakpoints][$index][values][$k]\" value=\"{$var}\">";
+                  $n['label'] = "<label for=\"breakpoint_{$index}_var_$i\">Variable \"$k\"</label>";
+                  $n['field'] = "<input class=\"form-control defaultVars\" type=\"text\" id=\"breakpoint_{$index}_var_$i\" name=\"mediatypeSet[breakpoints][$index][values][$k]\" value=\"{$var}\">";
                   $innerFormElements[] = $n;
 
                 }
@@ -87,7 +92,7 @@ $fragment = new rex_fragment();
       <div class="accordion" id="defaultEffects">
         <?
 
-        $effects = MediaTypeSetHelper::getMediaManagerEffectArray();
+        $effects = rex_media_type_set_helper::getMediaManagerEffectArray();
 
         foreach($this->formData['defaultEffects'] as $index => $savedEffectValues) { ?>
           <? $effectShortName = str_replace("rex_effect_", "", $savedEffectValues["effect"])?>
@@ -193,7 +198,7 @@ $fragment = new rex_fragment();
       var $panelVariables = $(this).closest('.panel').find('.defaultVars');
       var $panelTitle = $(this).closest('.panel').find('h5');
 
-      $panelTitle.html($panelTitle.html().replace(/"(.*?)"/, '"' + oldTitle + "<?= MediaTypeSet::MEDIA_SET_BREAKPOINT_DELIMETER ?>" + newBrk + '"'));
+      $panelTitle.html($panelTitle.html().replace(/"(.*?)"/, '"' + oldTitle + "<?= rex_media_type_set::MEDIA_SET_BREAKPOINT_DELIMETER ?>" + newBrk + '"'));
     });
 
     //adds a panel

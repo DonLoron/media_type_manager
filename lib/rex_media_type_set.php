@@ -6,7 +6,7 @@
  * Date: 13.12.17
  * Time: 16:41
  */
-class MediaTypeSet
+class rex_media_type_set
 {
 
   const MEDIA_SET_BREAKPOINT_DELIMETER = "-";
@@ -33,6 +33,39 @@ class MediaTypeSet
       return false;
     }
     return true;
+  }
+
+  public static function handleAJAX($action)
+  {
+
+    $response = [];
+
+    switch ($action) {
+      case 'getEffectVars':
+
+        $fragment = new rex_fragment();
+        $fragment->setVar("effectShortName", rex_request::get("effectShortName"));
+
+        try {
+
+          $response['content'] = $fragment->parse("effectVarsFieldset.php");
+          $response['status'] = "success";
+
+        } catch (Exception $e) {
+          $response['debug'] = [
+            "effectShortName" => rex_request::get("effectShortName")
+          ];
+          $response['status'] = "error";
+        }
+
+        break;
+      default:
+        $response['status'] = "error";
+        break;
+    }
+
+    echo json_encode($response);
+    die();
   }
 
   public function save($update = false) {
@@ -72,7 +105,7 @@ class MediaTypeSet
         if($this->translatedData['lazyloadActive'] == 1) {
           $breakpoint['types'][] = [
             'name' => $typeBaseName . "lazy",
-            'optionType' => "lazy"
+            'optionType' => 0.5
           ];
         }
 
@@ -96,7 +129,7 @@ class MediaTypeSet
               foreach($effect['options'] as $key => $optionValue) {
 
                 //if there is a var set in breakpoint, try to allocate it in option value
-                if(is_int($newType['optionType']) && isset($breakpoint['values'][$key])) {
+                if(is_numeric($newType['optionType']) && isset($breakpoint['values'][$key])) {
                   $optionValue = $newType['optionType'] * $breakpoint['values'][$key];
                 }
 

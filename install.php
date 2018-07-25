@@ -9,6 +9,7 @@ if(!$this->hasConfig()) {
     'lazyloadActive' => 1,
     'breakpoints' => [
       [
+        "mediaQuery" => "(min-width: 1025px)",
         "breakpointName" => "L",
         "values" => [
           "width" => 1920,
@@ -16,6 +17,7 @@ if(!$this->hasConfig()) {
         ]
       ],
       [
+        "mediaQuery" => "(min-width: 751px) and (max-width: 1024px)",
         "breakpointName" => "M",
         "values" => [
           "width" => 1024,
@@ -23,6 +25,7 @@ if(!$this->hasConfig()) {
         ]
       ],
       [
+        "mediaQuery" => "(min-width: 376px) and (max-width: 750px)",
         "breakpointName" => "S",
         "values" => [
           "width" => 750,
@@ -30,6 +33,7 @@ if(!$this->hasConfig()) {
         ]
       ],
       [
+        "mediaQuery" => "(max-width: 375px)",
         "breakpointName" => "XS",
         "values" => [
           "width" => 375,
