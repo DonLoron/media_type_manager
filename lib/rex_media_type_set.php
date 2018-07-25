@@ -274,7 +274,8 @@ class rex_media_type_set
   }
 
   /**
-   *
+   * gets all sets, ungrouped
+   * @return array
    */
   public static function getAllSets() {
     $sql = rex_sql::factory();
@@ -284,10 +285,15 @@ class rex_media_type_set
     return self::translateSql($allMediaManagerTypes);
   }
 
+  /**
+   * gets a set by name and translates to usable data
+   * @param $setName
+   * @return bool|mixed
+   */
   public static function getSetByName($setName) {
     $sql = rex_sql::factory();
 
-    $allMediaManagerTypes = $sql->getArray("SELECT * FROM " . rex::getTablePrefix() . "media_manager_type WHERE name LIKE '$setName%'");
+    $allMediaManagerTypes = $sql->getArray("SELECT * FROM " . rex::getTablePrefix() . "media_manager_type WHERE name LIKE '" . $setName . self::MEDIA_SET_BREAKPOINT_DELIMETER . "%'");
 
     $translatedData = self::translateSql($allMediaManagerTypes, false);
 
