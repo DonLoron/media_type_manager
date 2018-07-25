@@ -23,11 +23,16 @@ class rex_media_type_set
     $this->translatedData = $data;
   }
 
+  /**
+   * deletes a type by name
+   * @param $mediaSetName
+   * @return bool
+   */
   public static function delete($mediaSetName) {
     $sqlFactory = rex_sql::factory();
     try {
       $name = $mediaSetName . self::MEDIA_SET_BREAKPOINT_DELIMETER;
-      $sqlFactory->setQuery("DELETE t,e FROM rex_media_manager_type t LEFT JOIN rex_media_manager_type_effect e  ON t.id = e.type_id WHERE t.name LIKE '{$name}%'");
+      $sqlFactory->setQuery("DELETE t,e FROM rex_media_manager_type t LEFT JOIN rex_media_manager_type_effect e  ON t.id = e.type_id WHERE t.name LIKE '$name%'");
     } catch (rex_sql_exception $e) {
       echo "Konnte set nicht aktualisieren: " . $e->getMessage();
       return false;
@@ -35,39 +40,11 @@ class rex_media_type_set
     return true;
   }
 
-  public static function handleAJAX($action)
-  {
-
-    $response = [];
-
-    switch ($action) {
-      case 'getEffectVars':
-
-        $fragment = new rex_fragment();
-        $fragment->setVar("effectShortName", rex_request::get("effectShortName"));
-
-        try {
-
-          $response['content'] = $fragment->parse("effectVarsFieldset.php");
-          $response['status'] = "success";
-
-        } catch (Exception $e) {
-          $response['debug'] = [
-            "effectShortName" => rex_request::get("effectShortName")
-          ];
-          $response['status'] = "error";
-        }
-
-        break;
-      default:
-        $response['status'] = "error";
-        break;
-    }
-
-    echo json_encode($response);
-    die();
-  }
-
+  /**
+   * saves the type
+   * @param bool $update update type?
+   * @return bool
+   */
   public function save($update = false) {
 
     $sqlFactory = rex_sql::factory();
@@ -173,6 +150,12 @@ class rex_media_type_set
     return false;
   }
 
+  /**
+   * translates sql to a useful data form
+   * @param $result
+   * @param bool $short
+   * @return array
+   */
   public static function translateSql($result, $short = true) {
 
     $sql = rex_sql::factory();
@@ -236,6 +219,43 @@ class rex_media_type_set
     }
 
     return $sets;
+  }
+
+  /**
+   * helper function for getting effects on change
+   * @param $action
+   */
+  public static function handleAJAX($action)
+  {
+
+    $response = [];
+
+    switch ($action) {
+      case 'getEffectVars':
+
+        $fragment = new rex_fragment();
+        $fragment->setVar("effectShortName", rex_request::get("effectShortName"));
+
+        try {
+
+          $response['content'] = $fragment->parse("effectVarsFieldset.php");
+          $response['status'] = "success";
+
+        } catch (Exception $e) {
+          $response['debug'] = [
+            "effectShortName" => rex_request::get("effectShortName")
+          ];
+          $response['status'] = "error";
+        }
+
+        break;
+      default:
+        $response['status'] = "error";
+        break;
+    }
+
+    echo json_encode($response);
+    die();
   }
 
   /**
