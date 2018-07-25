@@ -60,10 +60,12 @@ $fragment = new rex_fragment();
                 <?
                 $innerFormElements = [];
 
-                $n = [];
-                $n['label'] = "<label for=\"breakpoint_query_$index\">Media Query</label>";
-                $n['field'] = "<input class=\"form-control\" type=\"text\" id=\"breakpoint_query_$index\" name=\"mediatypeSet[breakpoints][$index][mediaQuery]\" value=\"{$breakpoint['mediaQuery']}\">";
-                $innerFormElements[] = $n;
+                if($this->mediaQueryActive === true) {
+                  $n = [];
+                  $n['label'] = "<label for=\"breakpoint_query_$index\">Media Query</label>";
+                  $n['field'] = "<input class=\"form-control\" type=\"text\" id=\"breakpoint_query_$index\" name=\"mediatypeSet[breakpoints][$index][mediaQuery]\" value=\"{$breakpoint['mediaQuery']}\">";
+                  $innerFormElements[] = $n;
+                }
 
                 foreach($breakpoint['values'] as $k => $var) {
 

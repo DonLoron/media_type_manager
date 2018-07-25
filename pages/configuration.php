@@ -15,6 +15,7 @@ $formData = $this->getConfig('defaultConfig');
 
 $frag = new rex_fragment();
 $frag->setVar("formData", $formData);
+$frag->setVar("mediaQueryActive", true);
 $body = $frag->parse("form.php");
 
 $title = "Standardkonfiguration (Neue Sets werden immer mit diesen Werten angelegt)";
