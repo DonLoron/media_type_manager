@@ -9,6 +9,37 @@ Mit diesem Addon kannst du breakpoints definieren und für diese (bis jetzt) bre
 
 Lazyload und Picturefill werden mitgeliefert. Wenn das useragent Addon installiert ist, wird der Picturefill nur bei IE eingebunden.
 
+## Wie funktionierts?
+
+Ganz einfach!
+
+Typen im Modul anlegen, danach in HTML-File folgende Methode aufrufen
+
+```
+$mediaManagerTypename = "fullscreen";
+$file = "test_bild.jpg";
+$additionalAttributes = ["class" => "a-super-cool-class", "id" => "also-a-pretty-cool-id"];
+rex_media_set_manager_helper::getPictureTag($mediaManagerTypename, $file);
+```
+
+Daraus wird folgender output generiert.
+
+```
+<picture class="a-super-cool-class" id="also-a-pretty-cool-id">
+	<source media="(max-width: 375px)" srcset="index.php?rex_media_type=fullscreen-XS@lazy&rex_media_file=test_bild.jpg" data-srcset="index.php?rex_media_type=fullscreen-XS@1x&rex_media_file=test_bild.jpg 1x">
+	<source media="(min-width: 376px) and (max-width: 750px)" srcset="index.php?rex_media_type=fullscreen-S@lazy&rex_media_file=test_bild.jpg" data-srcset="index.php?rex_media_type=fullscreen-S@1x&rex_media_file=test_bild.jpg 1x">
+	<source media="(min-width: 751px) and (max-width: 1024px)" srcset="index.php?rex_media_type=fullscreen-M@lazy&rex_media_file=test_bild.jpg" data-srcset="index.php?rex_media_type=fullscreen-M@1x&rex_media_file=test_bild.jpg 1x">
+	<source media="(min-width: 1025px)" srcset="index.php?rex_media_type=fullscreen-L@lazy&rex_media_file=test_bild.jpg" data-srcset="index.php?rex_media_type=fullscreen-L@1x&rex_media_file=test_bild.jpg 1x">
+	<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="lazyload" data-src alt=" ">
+</picture>
+```
+
+Wichtig: wenn lazyload aktiv ist, muss entweder:
+ * die lazyload option in der addon konfiguration auf ja gesetzt sein
+ * das lazyload js file manuell geladen werden
+ 
+Ich höre es schon: "Der Picture Tag wird aber vom IE nicht unterstützt D: !". Keine sorge, der Picturefill wird auch automatisch geladen (solange aktiviert). Wenn das useragent Addon installiert ist, wird dieses auch nur im IE geladen.
+
 ## Entwicklungsstadium
  Es gibt noch diverse bugs und viele funktionen die noch nicht implentiert sind wie z.B.:
  * Benutzerdefinierte typen funktionieren nicht richtig

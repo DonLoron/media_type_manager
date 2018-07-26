@@ -20,9 +20,10 @@ class rex_media_type_set_helper
    * returns picture tag by given type name and file
    * @param $mediaTypeSetName
    * @param $file
+   * @param array $attributes key == html attr, value == html attr value
    * @return bool|string
    */
-  public static function getPictureTag ($mediaTypeSetName, $file) {
+  public static function getPictureTag ($mediaTypeSetName, $file, $attributes = []) {
 
     $mediaTypeSet = rex_media_type_set::getSetByName($mediaTypeSetName);
 
@@ -38,8 +39,18 @@ class rex_media_type_set_helper
     if($media instanceof rex_media) $alt = addslashes($media->getTitle());
     else $alt = " ";
 
+    if(count($attributes) > 0) {
+
+       $attrString = "";
+
+       foreach($attributes as $attrKey => $attrVal) {
+         $attrString .= " $attrKey=\"$attrVal\"";
+       }
+
+    }
+
     $tag = '';
-    $tag .= '<picture>'.PHP_EOL;
+    $tag .= '<picture' . $attrString . '>'.PHP_EOL;
 
     foreach(array_reverse($mediaTypeSet['breakpoints'], true) as $key => $breakpoint) {
 
