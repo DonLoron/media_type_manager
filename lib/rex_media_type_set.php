@@ -172,6 +172,7 @@ class rex_media_type_set
           $sets[$mediaTypeName]["lazyloadActive"] = ((!isset($sets[$mediaTypeName]['lazyloadActive']) || $sets[$mediaTypeName]['lazyloadActive'] == '0') && strpos($row['name'], 'lazy') !== false ? '1' : '0');
 
           $breakPointName = self::getMediaTypeBreakpointName($row['name']);
+
           //only if this breakpoint is not set
           $sets[$mediaTypeName]["breakpoints"][$breakPointName]['breakpointName'] = $breakPointName;
 
@@ -266,10 +267,14 @@ class rex_media_type_set
    */
   public static function getMediaTypeSetName($mediaManagerTypeName) {
 
-    $matched = preg_match("/(.*)-/Ui", $mediaManagerTypeName, $matches);
+    //because there may be mulitple occurences of "-" we have to explode and implode
+    $exploded = explode(self::MEDIA_SET_BREAKPOINT_DELIMETER, $mediaManagerTypeName);
 
-    if($matched === 1) {
-      return $matches[1];
+    //now get all but last part, everything after last occurence of "-" ist not important
+    $mediaTypeSetName = implode("-", array_slice($exploded, 0, count($exploded) - 1));
+
+    if($mediaTypeSetName !== "") {
+      return $mediaTypeSetName;
     } else {
       return "";
     }
@@ -283,11 +288,15 @@ class rex_media_type_set
    */
   public static function getMediaTypeBreakpointName($mediaManagerTypeName) {
 
-    //first split by MEDIA_TYPE_IDENTIFIER
-    $matched = preg_match("/-(.*)@/Ui", $mediaManagerTypeName, $matches);
+    //because there may be mulitple occurences of "-" we have to explode and implode
+    $explodedByMediaTypeIdentifier = explode(self::MEDIA_TYPE_IDENTIFIER, $mediaManagerTypeName);
+    $explodedByBreakpointDelimeter = explode(self::MEDIA_SET_BREAKPOINT_DELIMETER, $explodedByMediaTypeIdentifier[0]);
 
-    if($matched === 1) {
-      return $matches[1];
+    //last element is breakpoint name
+    $breakpointName = array_slice($explodedByBreakpointDelimeter, -1)[0];
+
+    if($breakpointName !== "") {
+      return $breakpointName;
     } else {
       return "";
     }
