@@ -13,13 +13,13 @@ Lazyload und Picturefill werden mitgeliefert. Wenn das useragent Addon installie
 
 Ganz einfach!
 
-Typen im Modul anlegen, danach in HTML-File folgende Methode aufrufen
+Typen im Modul anlegen, danach im HTML des Modul-Files folgende PHP-Methode aufrufen
 
 ```
 $mediaManagerTypename = "fullscreen";
 $file = "test_bild.jpg";
 $additionalAttributes = ["class" => "a-super-cool-class", "id" => "also-a-pretty-cool-id"];
-rex_media_set_manager_helper::getPictureTag($mediaManagerTypename, $file);
+echo rex_media_type_set_helper::getPictureTag($mediaManagerTypename, $file, $additionalAttributes);
 ```
 
 Daraus wird folgender output generiert.
